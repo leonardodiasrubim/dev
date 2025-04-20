@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Remoção de Forças - Viradores de Vagões</title>
+  
+  <!-- Importação dos módulos do Firebase -->
+  <script type="module">
+    // Sua configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyA0293mMHIgJUuP1er4raP30GzO_RfkzbE",
+  authDomain: "processoeletrico.firebaseapp.com",
+  projectId: "processoeletrico",
+  storageBucket: "processoeletrico.firebasestorage.app",
+  messagingSenderId: "36677647686",
+  appId: "1:36677647686:web:fd2fe47a8aafed48c93947"
+    };
+
+    // Importando Firebase e Firestore (Firebase v9)
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js';
+    import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js';
+
+    // Inicializando o Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Enviar dados para o Firestore
+    document.getElementById('remocao-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const nome = document.getElementById('nome').value;
+      const processo = document.getElementById('processo').value;
+      const ativo = document.getElementById('ativo').value;
+      const motivo = document.getElementById('motivo').value;
+
+      // Envia os dados para o Firestore
+      addDoc(collection(db, 'remocao_forca'), {
+        nome: nome,
+        processo: processo,
+        ativo: ativo,
+        motivo: motivo,
+        data: serverTimestamp()
+      }).then(() => {
+        alert('Solicitação enviada com sucesso!');
+        document.getElementById('remocao-form').reset();
+      }).catch((error) => {
+        console.error('Erro ao enviar solicitação: ', error);
+      });
+    });
+  </script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #2c3e50, #34495e);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 1rem;
+    }
+
+    .container {
+      background: #1e293b;
+      padding: 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      max-width: 500px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      color: #38bdf8;
+      font-weight: 600;
+    }
+
+    label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 2px solid #334155;
+      margin-bottom: 1.25rem;
+      background-color: #2e3b4e;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #38bdf8;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 1rem;
+      background-color: #38bdf8;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0ea5e9;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 1.5rem;
+        margin: 0;
+      }
+
+      h1 {
+        font-size: 1.4rem;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Solicitar Remoção de Força</h1>
+    <form id="remocao-form">
+      <label for="nome">Nome do Solicitante:</label>
+      <input type="text" id="nome" name="nome" required placeholder="Nome do solicitante">
+
+      <label for="processo">Processo:</label>
+      <select id="processo" name="processo" required>
+        <option value="">Selecione um processo</option>
+        <option value="Processo_1">Processo 1</option>
+        <option value="Processo_2">Processo 2</option>
+      </select>
+
+      <label for="ativo">Ativo:</label>
+      <select id="ativo" name="ativo" required>
+        <option value="">Selecione um ativo</option>
+        <option value="VV01">VV01</option>
+        <option value="VV02">VV02</option>
+        <option value="VV03">VV03</option>
+        <option value="VV04">VV04</option>
+        <option value="VV05">VV05</option>
+        <option value="VV06">VV06</option>
+        <option value="VV07">VV07</option>
+        <option value="VV08">VV08</option>
+      </select>
+
+      <label for="motivo">Motivo:</label>
+      <textarea id="motivo" name="motivo" rows="4" placeholder="Descreva o motivo da solicitação..." required></textarea>
+
+      <button type="submit">Enviar Solicitação</button>
+    </form>
+  </div>
+</body>
+</html>
